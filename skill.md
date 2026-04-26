@@ -1,6 +1,8 @@
 ---
 name: launch-signal
 description: Generate a complete X social playbook for a newly submitted hackathon project. Trigger when a founder needs to craft their narrative and build social capital from day zero. Analyzes current Solana ecosystem momentum, pattern-matches to past breakout projects, and produces a 4-week content plan plus 5 ready-to-post tweets.
+allowed-tools:
+  - WebSearch
 ---
 
 # launch-signal: Hackathon Project Social Playbook
