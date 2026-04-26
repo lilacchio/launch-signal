@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solana Skills — launch-signal & founder-freq</title>
+  <meta name="description" content="Two Claude Code skills that help Solana founders and hackathon projects win on X. Built for the Colosseum Hackathon." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --bg-card: #111;
+      --bg-elevated: #161616;
+      --bg-hover: #1c1c1c;
+      --border: #222;
+      --border-subtle: #1a1a1a;
+      --text: #ededed;
+      --text-secondary: #a1a1aa;
+      --text-muted: #52525b;
+      --purple: #8b5cf6;
+      --purple-dim: #7c3aed22;
+      --green: #10b981;
+      --green-dim: #10b98118;
+      --blue: #3b82f6;
+      --blue-dim: #3b82f618;
+      --radius: 8px;
+      --radius-sm: 5px;
+      --sidebar-w: 240px;
+      --nav-h: 56px;
+    }
+
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 24px); }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    .topnav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-logo {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, var(--purple), var(--green));
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .nav-badge {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 100px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+      border: none;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { background: var(--bg-elevated); color: var(--text); }
+
+    .btn-primary {
+      background: var(--purple);
+      color: #fff;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+
+    /* LAYOUT */
+    .layout {
+      display: flex;
+      min-height: 100vh;
+      padding-top: var(--nav-h);
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      top: var(--nav-h);
+      left: 0;
+      width: var(--sidebar-w);
+      height: calc(100vh - var(--nav-h));
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+      scrollbar-width: none;
+    }
+    .sidebar::-webkit-scrollbar { display: none; }
+
+    .sidebar-group { margin-bottom: 28px; }
+
+    .sidebar-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 0 20px 8px;
+    }
+
+    .sidebar-link {
+      display: block;
+      padding: 6px 20px;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: all 0.12s;
+    }
+    .sidebar-link:hover { color: var(--text); background: var(--bg-elevated); }
+    .sidebar-link.active { color: var(--purple); border-left-color: var(--purple); background: var(--purple-dim); }
+
+    .sidebar-pill {
+      display: inline-flex;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 100px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .pill-purple { background: var(--purple-dim); color: var(--purple); }
+    .pill-green  { background: var(--green-dim);  color: var(--green);  }
+
+    /* MAIN */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      max-width: 860px;
+      padding: 48px 56px 96px;
+    }
+
+    /* SECTIONS */
+    .section { margin-bottom: 72px; }
+
+    h1 {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+      margin-top: 48px;
+      color: var(--text);
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    p {
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+      line-height: 1.7;
+    }
+
+    .lead {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    /* HERO BADGES */
+    .hero-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+    }
+
+    /* INSTALL BLOCK */
+    .install-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 28px 0;
+    }
+
+    .install-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .install-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .install-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .skill-tag {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+    .tag-purple { background: var(--purple-dim); color: var(--purple); }
+    .tag-green  { background: var(--green-dim);  color: var(--green);  }
+
+    .install-cmd {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      padding: 14px 16px;
+      color: var(--text);
+      user-select: all;
+    }
+
+    .copy-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 4px;
+      color: var(--text-muted);
+      font-size: 11px;
+      transition: all 0.12s;
+    }
+    .copy-btn:hover { color: var(--text); background: var(--bg-elevated); }
+    .copy-btn.copied { color: var(--green); }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    /* SKILL HEADER */
+    .skill-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 28px;
+    }
+
+    .skill-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .icon-purple { background: var(--purple-dim); }
+    .icon-green  { background: var(--green-dim); }
+
+    .skill-meta h2 { margin-top: 0; margin-bottom: 4px; font-size: 20px; }
+    .skill-meta p  { margin: 0; font-size: 14px; }
+
+    /* TABS */
+    .tabs-wrapper { margin-bottom: 4px; }
+
+    .tabs-nav {
+      display: flex;
+      gap: 2px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+
+    .tab-btn {
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.12s;
+      margin-bottom: -1px;
+    }
+    .tab-btn:hover { color: var(--text-secondary); }
+    .tab-btn.active { color: var(--text); border-bottom-color: var(--purple); }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* INPUT / OUTPUT CARDS */
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .io-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .io-card-header {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .io-card-header.input  { color: var(--blue); }
+    .io-card-header.output { color: var(--green); }
+
+    .io-card-body {
+      padding: 16px;
+      font-size: 13.5px;
+    }
+
+    .io-field {
+      margin-bottom: 10px;
+    }
+    .io-field:last-child { margin-bottom: 0; }
+
+    .io-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 3px;
+    }
+
+    .io-value {
+      color: var(--text-secondary);
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    .io-value code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: var(--bg-elevated);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: var(--purple);
+    }
+
+    /* OUTPUT SECTIONS */
+    .output-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .output-section-header {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .output-section-body {
+      padding: 16px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .output-section-body strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* TWEET CARDS */
+    .tweet-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .tweet-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+    }
+
+    .tweet-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .tweet-text {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.6;
+      white-space: pre-line;
+    }
+
+    /* ARCHETYPE CARDS */
+    .archetype-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 28px 0;
+    }
+
+    .archetype-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      transition: border-color 0.15s;
+    }
+    .archetype-card:hover { border-color: var(--purple); }
+
+    .archetype-icon { font-size: 22px; margin-bottom: 10px; }
+    .archetype-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .archetype-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+
+    /* CALLOUT */
+    .callout {
+      display: flex;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      margin: 20px 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .callout-purple { background: var(--purple-dim); border: 1px solid #7c3aed44; color: var(--text-secondary); }
+    .callout-green  { background: var(--green-dim);  border: 1px solid #10b98133; color: var(--text-secondary); }
+    .callout-icon { font-size: 16px; flex-shrink: 0; padding-top: 1px; }
+
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid var(--border);
+      margin-top: 48px;
+      padding: 32px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-left { font-size: 13px; color: var(--text-muted); }
+    .footer-left a { color: var(--text-secondary); text-decoration: none; }
+    .footer-left a:hover { color: var(--text); }
+
+    .footer-links { display: flex; gap: 16px; }
+    .footer-links a { font-size: 13px; color: var(--text-muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--text-secondary); }
+
+    /* STEP INDICATOR */
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--purple-dim);
+      color: var(--purple);
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding: 28px 20px 64px; }
+      .io-grid { grid-template-columns: 1fr; }
+      .install-grid { grid-template-columns: 1fr; }
+      .archetype-grid { grid-template-columns: 1fr 1fr; }
+      h1 { font-size: 28px; }
+    }
+
+    /* SCROLL SPY ACTIVE */
+    .sidebar-link.active { color: var(--purple); border-left-color: var(--purple); background: var(--purple-dim); }
+
+    /* CODE INLINE */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      padding: 1px 6px;
+      border-radius: 4px;
+      color: var(--purple);
+    }
+
+    /* CONTENT LIST */
+    .content-list {
+      list-style: none;
+      margin: 16px 0;
+    }
+    .content-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 6px 0;
+      font-size: 14px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .content-list li:last-child { border: none; }
+    .content-list .check { color: var(--green); font-size: 13px; flex-shrink: 0; padding-top: 2px; }
+
+    /* PATTERN CARDS */
+    .pattern-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .pattern-card {
+      padding: 14px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+
+    .pattern-name {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .pattern-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 3px;
+      background: var(--purple-dim);
+      color: var(--purple);
+      margin-bottom: 6px;
+    }
+
+    .pattern-desc {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <a href="#" class="nav-brand">
+    <div class="nav-logo">S</div>
+    Solana Skills
+    <span class="nav-badge">Colosseum Hackathon</span>
+  </a>
+  <div class="nav-actions">
+    <a href="https://sagapad.com/skills" target="_blank" class="btn btn-ghost">SagaPad Marketplace</a>
+    <a href="https://github.com" target="_blank" class="btn btn-primary">View on GitHub</a>
+  </div>
+</nav>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <div class="sidebar-label">Getting Started</div>
+      <a href="#overview" class="sidebar-link active">Overview</a>
+      <a href="#install" class="sidebar-link">Installation</a>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-label">Skills</div>
+      <a href="#launch-signal" class="sidebar-link">launch-signal <span class="sidebar-pill pill-purple">Topic 1</span></a>
+      <a href="#ls-how" class="sidebar-link">How it works</a>
+      <a href="#ls-examples" class="sidebar-link">Examples</a>
+      <a href="#ls-patterns" class="sidebar-link">Breakout Patterns</a>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-label">&nbsp;</div>
+      <a href="#founder-freq" class="sidebar-link">founder-freq <span class="sidebar-pill pill-green">Topic 2</span></a>
+      <a href="#ff-how" class="sidebar-link">How it works</a>
+      <a href="#ff-examples" class="sidebar-link">Examples</a>
+      <a href="#ff-archetypes" class="sidebar-link">Archetypes</a>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- OVERVIEW -->
+    <section class="section" id="overview">
+      <div class="hero-badges">
+        <span class="badge"><span class="badge-dot" style="background:var(--purple)"></span>Claude Code Skill</span>
+        <span class="badge"><span class="badge-dot" style="background:var(--green)"></span>Solana Ecosystem</span>
+        <span class="badge"><span class="badge-dot" style="background:var(--blue)"></span>Built for Colosseum</span>
+      </div>
+
+      <h1>Win on X.<br/>From day zero.</h1>
+
+      <p class="lead">
+        Two Claude Code skills built for Solana founders and hackathon projects. Not generic advice generators. Skills that study how past breakout projects actually grew, and translate those patterns into a plan specific to your project and your voice.
+      </p>
+
+      <div class="callout callout-purple">
+        <span class="callout-icon">⚡</span>
+        <span>Built for the <strong>Colosseum Hackathon</strong> via SagaPad Skill Marketplace. Both skills are live and installable now.</span>
+      </div>
+
+      <div class="install-grid" id="install">
+        <div class="install-card">
+          <div class="install-card-header">
+            <div class="install-card-title">
+              <span class="skill-tag tag-purple">Topic 1</span>
+              launch-signal
+            </div>
+            <button class="copy-btn" onclick="copyText(this, 'npx skills add sagapad/launch-signal')">copy</button>
+          </div>
+          <div class="install-cmd">npx skills add sagapad/launch-signal</div>
+        </div>
+        <div class="install-card">
+          <div class="install-card-header">
+            <div class="install-card-title">
+              <span class="skill-tag tag-green">Topic 2</span>
+              founder-freq
+            </div>
+            <button class="copy-btn" onclick="copyText(this, 'npx skills add sagapad/founder-freq')">copy</button>
+          </div>
+          <div class="install-cmd">npx skills add sagapad/founder-freq</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- LAUNCH SIGNAL -->
+    <section class="section" id="launch-signal">
+
+      <div class="skill-header">
+        <div class="skill-icon icon-purple">🚀</div>
+        <div class="skill-meta">
+          <h2>launch-signal</h2>
+          <p>Hackathon Project Social Playbook. Five real breakout patterns from past Colosseum winners, live ecosystem search, and a complete 4-week X strategy built around your specific project.</p>
+        </div>
+      </div>
+
+      <div id="ls-how">
+        <h3>What it produces</h3>
+        <ul class="content-list">
+          <li><span class="check">✓</span>Core story angle and origin hook — the one line you use for the first 30 days</li>
+          <li><span class="check">✓</span>4-week content plan with specific post types per day</li>
+          <li><span class="check">✓</span>X Spaces, AMAs, and Solana community events to attend</li>
+          <li><span class="check">✓</span>Engagement strategy with keywords to monitor and timing</li>
+          <li><span class="check">✓</span>5 fully written, ready-to-post tweets — no editing required</li>
+        </ul>
+
+        <div class="callout callout-purple">
+          <span class="callout-icon">💡</span>
+          <span><strong>The Momentum Attachment Framework:</strong> Most new projects try to start their own conversation. launch-signal finds the conversation already happening in Solana Twitter and helps you insert your project as the answer.</span>
+        </div>
+      </div>
+
+      <div id="ls-patterns">
+        <h3 style="margin-top:28px">Breakout Pattern Library</h3>
+        <p>Five real Colosseum project narratives are baked into the skill. Your project gets matched to the closest one and the playbook adapts accordingly.</p>
+        <div class="pattern-grid">
+          <div class="pattern-card">
+            <div class="pattern-name">The Pain Legitimizer</div>
+            <div class="pattern-tag">Pyth Network</div>
+            <div class="pattern-desc">Lead with the live pain, not the technology. Validate what the community already feels.</div>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-name">The Category Reframer</div>
+            <div class="pattern-tag">Tensor</div>
+            <div class="pattern-desc">Refuse to compete on the market's existing terms. Redefine the category itself.</div>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-name">The Transparency Compounding</div>
+            <div class="pattern-tag">Drift Protocol</div>
+            <div class="pattern-desc">Post decisions publicly, including wrong ones. Visible reasoning converts skeptics.</div>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-name">The Inevitable Future</div>
+            <div class="pattern-tag">MagicBlock</div>
+            <div class="pattern-desc">Frame your category as inevitable. Remove the "will this work?" objection early.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXAMPLES -->
+      <div id="ls-examples" style="margin-top:36px">
+        <h3>Examples</h3>
+        <p>Three project types, three different playbooks. All generated by the skill.</p>
+
+        <div class="tabs-wrapper">
+          <div class="tabs-nav" id="ls-tabs">
+            <button class="tab-btn active" onclick="switchTab('ls', 'defi', this)">DeFi Protocol</button>
+            <button class="tab-btn" onclick="switchTab('ls', 'gaming', this)">Gaming / Consumer</button>
+            <button class="tab-btn" onclick="switchTab('ls', 'devtools', this)">Dev Tools</button>
+          </div>
+
+          <!-- DeFi Tab -->
+          <div class="tab-panel active" id="ls-defi">
+            <div class="io-grid">
+              <div class="io-card">
+                <div class="io-card-header input">⬇ Input</div>
+                <div class="io-card-body">
+                  <div class="io-field"><div class="io-label">Project</div><div class="io-value">zkFi</div></div>
+                  <div class="io-field"><div class="io-label">What it does</div><div class="io-value">ZK-proof privacy layer for Solana DeFi. Shields swap amounts from MEV bots. Compatible with any existing DEX, no migration needed.</div></div>
+                  <div class="io-field"><div class="io-label">Who it's for</div><div class="io-value">DeFi traders losing money to front-running bots</div></div>
+                  <div class="io-field"><div class="io-label">Tech stack</div><div class="io-value"><code>Anchor</code> <code>Groth16</code> <code>Light Protocol</code></div></div>
+                  <div class="io-field"><div class="io-label">Team</div><div class="io-value">ex-Aztec Protocol, ex-Solana Labs</div></div>
+                </div>
+              </div>
+              <div class="io-card">
+                <div class="io-card-header output">⬆ Output — Story Angle</div>
+                <div class="io-card-body">
+                  <div class="io-field"><div class="io-label">Pattern Match</div><div class="io-value"><strong>Pain Legitimizer</strong> (Pyth). Lead with the sandwich attack, not the ZK mechanism. The technology is the proof, not the story.</div></div>
+                  <div class="io-field"><div class="io-label">Origin Hook</div><div class="io-value" style="color:var(--text); font-style:italic">"Every DeFi trader on Solana is getting front-run. zkFi is the first shield that actually works without switching DEXs."</div></div>
+                  <div class="io-field"><div class="io-label">Momentum Attach</div><div class="io-value">Jito MEV revenue hit a record high this week. Attach to that conversation directly within 2 hours of it trending.</div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="output-section">
+              <div class="output-section-header">📅 4-Week Content Plan</div>
+              <div class="output-section-body">
+                <strong>Week 1 — Exist:</strong> Day 1 launch thread attached to live MEV discourse. Day 3 recreate a real sandwich attack with actual tx hashes and show the math. Day 5 team story. Day 7 one technical mechanism explained without jargon.<br/><br/>
+                <strong>Week 2 — Credibility:</strong> "We integrated into Orca in 4 hours" post proves the compatibility claim. One data post on MEV extraction volume this week positions as category experts. Daily replies to front-running threads with one specific technical point, no pitch.<br/><br/>
+                <strong>Week 3 — Community:</strong> Post the actual ZK circuit code and a diagram. Shoutout Light Protocol. First 50 private swaps milestone. Attend Drift community call.<br/><br/>
+                <strong>Week 4 — Convert:</strong> "100 swaps, zero front-runs" results thread. Macro post on why privacy gets solved at the app layer on Solana. Testnet CTA with direct link.
+              </div>
+            </div>
+
+            <div class="output-section">
+              <div class="output-section-header">✍️ Example Posts</div>
+              <div class="output-section-body">
+                <div class="tweet-list">
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 1 — Launch</div>
+                    <div class="tweet-text">A Solana MEV bot made more money last week than most DeFi traders.
+
+It didn't build anything. It just watched your swaps and cut in line.
+
+We built the fix. And it works with the DEXs you're already using. 🧵</div>
+                  </div>
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 2 — The Problem</div>
+                    <div class="tweet-text">Here's a sandwich attack that happened 6 hours ago on Solana.
+
+Trader wanted to swap $10,000 USDC to SOL.
+Bot saw the pending tx. Bought SOL first. Price moved. Trader got worse execution. Bot sold.
+
+Profit for the bot: $83. Cost to the trader: $83 they'll never know they lost.
+
+This happens thousands of times per day.</div>
+                  </div>
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 3 — The Solution</div>
+                    <div class="tweet-text">We just submitted to the Colosseum hackathon.
+
+zkFi shields your swap inputs using ZK proofs before they hit the mempool. The bot sees a valid transaction. It doesn't see the amount, the token, or the wallet.
+
+No private mempool. No new DEX. Plugs into Orca, Jupiter, Drift — whatever you're using.
+
+Testnet this week.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gaming Tab -->
+          <div class="tab-panel" id="ls-gaming">
+            <div class="io-grid">
+              <div class="io-card">
+                <div class="io-card-header input">⬇ Input</div>
+                <div class="io-card-body">
+                  <div class="io-field"><div class="io-label">Project</div><div class="io-value">SolQuest</div></div>
+                  <div class="io-field"><div class="io-label">What it does</div><div class="io-value">Gamified on-chain quests that teach Solana development. Developers earn tokens and NFT credentials by completing real coding challenges verified on-chain.</div></div>
+                  <div class="io-field"><div class="io-label">Who it's for</div><div class="io-value">Web2 developers entering the Solana ecosystem</div></div>
+                  <div class="io-field"><div class="io-label">Tech stack</div><div class="io-value"><code>Anchor</code> <code>MagicBlock</code> <code>compressed NFTs</code></div></div>
+                  <div class="io-field"><div class="io-label">Team</div><div class="io-value">2 devs, ex-Google and ex-Superteam</div></div>
+                </div>
+              </div>
+              <div class="io-card">
+                <div class="io-card-header output">⬆ Output — Story Angle</div>
+                <div class="io-card-body">
+                  <div class="io-field"><div class="io-label">Pattern Match</div><div class="io-value"><strong>Underdog Authenticity</strong> (Orca). Two builders, no VC, making Solana dev accessible. The personal story travels faster than the product description.</div></div>
+                  <div class="io-field"><div class="io-label">Origin Hook</div><div class="io-value" style="color:var(--text); font-style:italic">"Every tutorial teaches you to code for Solana. SolQuest pays you to learn it."</div></div>
+                  <div class="io-field"><div class="io-label">Momentum Attach</div><div class="io-value">Solana developer count is growing 40% YoY and everyone is asking where onboarding tools are. Attach to that existing conversation.</div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="output-section">
+              <div class="output-section-header">📅 4-Week Content Plan</div>
+              <div class="output-section-body">
+                <strong>Week 1 — Exist:</strong> Launch post targeting "how do I learn Solana dev" conversations. Show the actual quest UI on day 3. Team story on day 5: "we got lost in tutorials, so we built the thing we wished existed." Day 7: how on-chain quest verification actually works.<br/><br/>
+                <strong>Week 2 — Credibility:</strong> Post the first developer who completed a quest and what they earned. Show the credential NFT they received. Ask: "what Solana concept would you most want a quest for?" to drive engagement and product direction.<br/><br/>
+                <strong>Week 3 — Community:</strong> Shoutout the Superteam Learn program as an adjacent community. Post the top 3 quests by completion rate with one surprise in the data. Attend Superteam builder Space.<br/><br/>
+                <strong>Week 4 — Convert:</strong> "50 quests completed, 50 developers onboarded" thread. Direct CTA: "if you've been wanting to learn Solana dev, start here — takes 20 minutes, earns you tokens."
+              </div>
+            </div>
+
+            <div class="output-section">
+              <div class="output-section-header">✍️ Example Posts</div>
+              <div class="output-section-body">
+                <div class="tweet-list">
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 1 — Launch</div>
+                    <div class="tweet-text">Solana tutorials are free. That's the problem.
+
+Nobody finishes free tutorials. Nobody finishes courses they paid $200 for either.
+
+People finish things that pay them back.
+
+We built a quest system that verifies your Solana code on-chain and pays you in tokens when you pass. 🧵</div>
+                  </div>
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 2 — The Problem</div>
+                    <div class="tweet-text">Here's the Solana developer funnel nobody talks about:
+
+100 developers start a tutorial.
+30 finish the first section.
+8 deploy their first program.
+2 ship something real.
+
+The dropout isn't talent. It's the feedback loop. Nothing tells you you're making progress.
+
+We're fixing that.</div>
+                  </div>
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 4 — Personal</div>
+                    <div class="tweet-text">We spent 3 months trying to onboard to Solana dev.
+
+Between us: one Google engineer, one Superteam contributor.
+
+We got lost in docs, confused by conflicting tutorials, and couldn't tell if we were making progress.
+
+So we built the tool we needed. SolQuest just submitted to Colosseum.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dev Tools Tab -->
+          <div class="tab-panel" id="ls-devtools">
+            <div class="io-grid">
+              <div class="io-card">
+                <div class="io-card-header input">⬇ Input</div>
+                <div class="io-card-body">
+                  <div class="io-field"><div class="io-label">Project</div><div class="io-value">AnchorLens</div></div>
+                  <div class="io-field"><div class="io-label">What it does</div><div class="io-value">Visual debugger for Anchor programs. Lets developers inspect account state, trace CPI calls, and replay transactions step-by-step in a browser UI.</div></div>
+                  <div class="io-field"><div class="io-label">Who it's for</div><div class="io-value">Solana developers debugging Anchor programs</div></div>
+                  <div class="io-field"><div class="io-label">Tech stack</div><div class="io-value"><code>Anchor</code> <code>React</code> <code>Solana web3.js</code></div></div>
+                  <div class="io-field"><div class="io-label">Team</div><div class="io-value">Solo dev, 4 years Rust, ex-protocol engineer</div></div>
+                </div>
+              </div>
+              <div class="io-card">
+                <div class="io-card-header output">⬆ Output — Story Angle</div>
+                <div class="io-card-body">
+                  <div class="io-field"><div class="io-label">Pattern Match</div><div class="io-value"><strong>Pain Legitimizer</strong> (Pyth). Every Solana developer has a debugging horror story. Start there. The visual interface is the proof it's fixed.</div></div>
+                  <div class="io-field"><div class="io-label">Origin Hook</div><div class="io-value" style="color:var(--text); font-style:italic">"Solana developers spend more time debugging than building. AnchorLens shows you exactly what's happening — in your browser."</div></div>
+                  <div class="io-field"><div class="io-label">Momentum Attach</div><div class="io-value">Anchor v0.30 just shipped and DX conversations are at peak activity. Every post about developer experience is a door into this conversation.</div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="output-section">
+              <div class="output-section-header">✍️ Example Posts</div>
+              <div class="output-section-body">
+                <div class="tweet-list">
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 1 — Launch</div>
+                    <div class="tweet-text">I've spent 4 years writing Solana programs.
+
+Roughly 40% of that time was reading logs that looked like this:
+
+"Error: failed to send transaction: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1"
+
+I built the tool I should have had from day one. 🧵</div>
+                  </div>
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 3 — Solution</div>
+                    <div class="tweet-text">AnchorLens just submitted to Colosseum.
+
+Click any transaction. See every account that changed, every CPI call that fired, every instruction that ran — in order, in a browser.
+
+No more logs. No more guessing. Just the program state, visible.
+
+Built for Anchor. Works with any Solana cluster.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /tabs-wrapper -->
+      </div><!-- /ls-examples -->
+    </section>
+
+    <hr class="divider" />
+
+    <!-- FOUNDER FREQ -->
+    <section class="section" id="founder-freq">
+
+      <div class="skill-header">
+        <div class="skill-icon icon-green">📡</div>
+        <div class="skill-meta">
+          <h2>founder-freq</h2>
+          <p>Solana Founder Personal Brand Playbook. Five founder archetypes distilled from studying the biggest builders in the ecosystem. Identifies your primary + secondary blend and builds a complete voice, content, and growth strategy around it.</p>
+        </div>
+      </div>
+
+      <div id="ff-how">
+        <h3>What it produces</h3>
+        <ul class="content-list">
+          <li><span class="check">✓</span>Founder archetype analysis with primary and secondary blend explained</li>
+          <li><span class="check">✓</span>Unique POV: the one specific angle to own on X</li>
+          <li><span class="check">✓</span>3-4 content pillars with post frequency per pillar</li>
+          <li><span class="check">✓</span>Writing style guide: tone, sentence structure, jargon rules, phrases to use and avoid</li>
+          <li><span class="check">✓</span>Weekly posting rhythm calibrated to your archetype</li>
+          <li><span class="check">✓</span>Cold-start strategy for founders under 1,000 followers</li>
+          <li><span class="check">✓</span>10 fully written example posts, ready to paste</li>
+        </ul>
+      </div>
+
+      <div id="ff-archetypes">
+        <h3 style="margin-top:28px">The Five Founder Archetypes</h3>
+        <p>Every output is calibrated to a primary and secondary archetype blend. Not a template — a system built from studying what actually works for each type.</p>
+
+        <div class="archetype-grid">
+          <div class="archetype-card">
+            <div class="archetype-icon">🔭</div>
+            <div class="archetype-name">Technical Oracle</div>
+            <div class="archetype-desc">Rare, dense posts. Every one carries weight. Growth through reputation compound interest.</div>
+          </div>
+          <div class="archetype-card">
+            <div class="archetype-icon">🕸</div>
+            <div class="archetype-name">Ecosystem Builder</div>
+            <div class="archetype-desc">Connective tissue of the ecosystem. Celebrates and amplifies others. Growth through reciprocity loops.</div>
+          </div>
+          <div class="archetype-card">
+            <div class="archetype-icon">⚡</div>
+            <div class="archetype-name">Contrarian</div>
+            <div class="archetype-desc">Takes strong positions. Debates publicly. Growth because controversy is distribution.</div>
+          </div>
+          <div class="archetype-card">
+            <div class="archetype-icon">🏗</div>
+            <div class="archetype-name">Builder-in-Public</div>
+            <div class="archetype-desc">Documents everything, ships constantly. Growth because people root for the journey.</div>
+          </div>
+          <div class="archetype-card">
+            <div class="archetype-icon">📊</div>
+            <div class="archetype-name">Strategist</div>
+            <div class="archetype-desc">Predicts markets, reads trends. Growth through track record of being right early.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXAMPLES -->
+      <div id="ff-examples" style="margin-top:36px">
+        <h3>Examples</h3>
+        <p>Three founder types, three different archetypes. All generated by the skill from the inputs shown.</p>
+
+        <div class="tabs-wrapper">
+          <div class="tabs-nav" id="ff-tabs">
+            <button class="tab-btn active" onclick="switchTab('ff', 'technical', this)">Technical Founder</button>
+            <button class="tab-btn" onclick="switchTab('ff', 'operator', this)">Operator Founder</button>
+            <button class="tab-btn" onclick="switchTab('ff', 'researcher', this)">Researcher Founder</button>
+          </div>
+
+          <!-- Technical Tab -->
+          <div class="tab-panel active" id="ff-technical">
+            <div class="io-grid">
+              <div class="io-card">
+                <div class="io-card-header input">⬇ Input</div>
+                <div class="io-card-body">
+                  <div class="io-field"><div class="io-label">Founder</div><div class="io-value">Rishi Anand</div></div>
+                  <div class="io-field"><div class="io-label">Building</div><div class="io-value">AutoDeFi: AI agent that manages Solana DeFi positions autonomously</div></div>
+                  <div class="io-field"><div class="io-label">Background</div><div class="io-value">Technical. ex-Google ML, 3 years Solana dev.</div></div>
+                  <div class="io-field"><div class="io-label">Focus</div><div class="io-value">DeFi + AI intersection</div></div>
+                  <div class="io-field"><div class="io-label">Style</div><div class="io-value">Analytical, data-driven, slightly contrarian</div></div>
+                  <div class="io-field"><div class="io-label">Followers</div><div class="io-value">~800</div></div>
+                </div>
+              </div>
+              <div class="io-card">
+                <div class="io-card-header output">⬆ Output — Archetype</div>
+                <div class="io-card-body">
+                  <div class="io-field"><div class="io-label">Primary</div><div class="io-value"><strong>The Strategist</strong> (65%). ML background gives him a genuinely rare lens — understands both protocol mechanism design and the behavior of AI systems. Can see what's coming before it's consensus.</div></div>
+                  <div class="io-field"><div class="io-label">Secondary</div><div class="io-value"><strong>The Contrarian</strong> (35%). The AI agent for DeFi space is full of vaporware. His data instincts let him cut through it with specificity nobody else has.</div></div>
+                  <div class="io-field"><div class="io-label">Unique POV</div><div class="io-value" style="color:var(--text); font-style:italic">"AI agents don't fail in DeFi because the AI is bad. They fail because on-chain state moves faster than any agent can reason about it. The real bottleneck isn't intelligence, it's latency."</div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="output-section">
+              <div class="output-section-header">🎨 Writing Style Guide</div>
+              <div class="output-section-body">
+                <strong>Tone:</strong> Confident and specific. States conclusions before explaining them. Never hedges with "I think" or "it seems like." Brings receipts.<br/><br/>
+                <strong>Sentence structure:</strong> Short declarative statements for claims. Longer structured sentences for explanation. Never uses bullet points in regular posts — thread structure instead, one idea per tweet.<br/><br/>
+                <strong>Phrases to use:</strong> "Here's the data:" / "The real problem isn't X, it's Y" / "Most people are thinking about this wrong because" / "We tested this. Here's what happened."<br/><br/>
+                <strong>Phrases to avoid:</strong> "Exciting to share that..." / "WAGMI" / "The future of finance is..." / "Thoughts?" as a post ending.
+              </div>
+            </div>
+
+            <div class="output-section">
+              <div class="output-section-header">✍️ Example Posts (in voice)</div>
+              <div class="output-section-body">
+                <div class="tweet-list">
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 1 — POV Introduction</div>
+                    <div class="tweet-text">AI agents don't fail in DeFi because the AI is bad.
+
+They fail because on-chain state moves faster than the agent can reason about it.
+
+I spent 3 years at Google building ML systems. Then 3 years building on Solana.
+
+The bottleneck isn't intelligence. It's latency. And only one chain is fast enough to close the gap.
+
+Here's what that means for where AI x DeFi actually goes: 🧵</div>
+                  </div>
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 3 — Short Take</div>
+                    <div class="tweet-text">Every "AI agent for DeFi" project that launched in the last 6 months is using the same architecture.
+
+None of them have published performance data.
+
+That's not a coincidence.</div>
+                  </div>
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 4 — Builder Moment</div>
+                    <div class="tweet-text">AutoDeFi got liquidated in testing yesterday.
+
+The agent was managing a leveraged position on Kamino. Price moved 3% in 40 seconds. The rebalance call went out. The transaction landed 2 blocks late.
+
+Liquidated.
+
+We built a new pre-emptive trigger that fires 200ms earlier. Testing again today.
+
+This is what building looks like.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Operator Tab -->
+          <div class="tab-panel" id="ff-operator">
+            <div class="io-grid">
+              <div class="io-card">
+                <div class="io-card-header input">⬇ Input</div>
+                <div class="io-card-body">
+                  <div class="io-field"><div class="io-label">Founder</div><div class="io-value">Maya Patel</div></div>
+                  <div class="io-field"><div class="io-label">Building</div><div class="io-value">Pocket: a Solana wallet with AI-powered transaction summaries in plain English. Shows users exactly what they signed, after they signed it.</div></div>
+                  <div class="io-field"><div class="io-label">Background</div><div class="io-value">Non-technical. ex-Product Manager at Coinbase for 4 years.</div></div>
+                  <div class="io-field"><div class="io-label">Focus</div><div class="io-value">Consumer crypto, making Solana accessible</div></div>
+                  <div class="io-field"><div class="io-label">Style</div><div class="io-value">Storyteller, warm, translates crypto for normal people</div></div>
+                </div>
+              </div>
+              <div class="io-card">
+                <div class="io-card-header output">⬆ Output — Archetype</div>
+                <div class="io-card-body">
+                  <div class="io-field"><div class="io-label">Primary</div><div class="io-value"><strong>Builder-in-Public</strong> (60%). 4 years at Coinbase watching users fail gives her a supply of vivid, relatable stories. Non-technical background is a strength: she can write what users actually feel.</div></div>
+                  <div class="io-field"><div class="io-label">Secondary</div><div class="io-value"><strong>Ecosystem Builder</strong> (40%). Consumer crypto is won through community. Maya's strength is making people feel included. She should amplify and connect constantly.</div></div>
+                  <div class="io-field"><div class="io-label">Unique POV</div><div class="io-value" style="color:var(--text); font-style:italic">"Crypto has been 'almost mainstream' for 10 years. The problem isn't the technology — it's that every product is built for people who already understand crypto."</div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="output-section">
+              <div class="output-section-header">🎨 Writing Style Guide</div>
+              <div class="output-section-body">
+                <strong>Tone:</strong> Warm but direct. Uses real user stories — not hypothetical. Never condescending about crypto complexity, just honest about it. The reader should feel like she gets them.<br/><br/>
+                <strong>Sentence structure:</strong> Short sentences. Conversational. Occasional one-word paragraphs for emphasis. Reads like a smart friend texting, not a product manager presenting.<br/><br/>
+                <strong>Jargon policy:</strong> Almost none. When she must use a crypto term, translate it immediately in the same sentence: "you approved a transaction (you gave the app permission to move your tokens)."<br/><br/>
+                <strong>Phrases to use:</strong> "Here's what actually happened:" / "Nobody talks about this but..." / "I watched this happen 100 times at Coinbase."<br/><br/>
+                <strong>Phrases to avoid:</strong> "Alpha" / "Onchain future" / "We're bullish on" / "Exciting to announce."
+              </div>
+            </div>
+
+            <div class="output-section">
+              <div class="output-section-header">✍️ Example Posts (in voice)</div>
+              <div class="output-section-body">
+                <div class="tweet-list">
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 1 — POV Introduction</div>
+                    <div class="tweet-text">I spent 4 years at Coinbase watching people lose money to transactions they didn't understand.
+
+Not scams. Not hacks. Just normal people who clicked "approve" and had no idea what they approved.
+
+The wallet showed them a hex string. The hex string was their entire savings leaving.
+
+I'm building the thing that should have existed from the start.</div>
+                  </div>
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 3 — Short Take</div>
+                    <div class="tweet-text">The reason crypto is still "coming" to mainstream users:
+
+Products are built by people who already understand crypto, for people who already understand crypto.
+
+Nobody is building backwards from confusion.</div>
+                  </div>
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 7 — Strong Opinion</div>
+                    <div class="tweet-text">Hot take: "just read the docs" is the worst advice you can give a new crypto user.
+
+The docs assume you already know what you're doing.
+
+The person who needs docs is the person who just signed a transaction they don't understand.
+
+That moment is where we lose people. That's the product gap.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Researcher Tab -->
+          <div class="tab-panel" id="ff-researcher">
+            <div class="io-grid">
+              <div class="io-card">
+                <div class="io-card-header input">⬇ Input</div>
+                <div class="io-card-body">
+                  <div class="io-field"><div class="io-label">Founder</div><div class="io-value">Daniel Park</div></div>
+                  <div class="io-field"><div class="io-label">Building</div><div class="io-value">Proof: on-chain attestation protocol for Solana. Lets any program publish cryptographic proof of computation that other programs can verify trustlessly.</div></div>
+                  <div class="io-field"><div class="io-label">Background</div><div class="io-value">Researcher. PhD in cryptography, 2 years in Solana ecosystem.</div></div>
+                  <div class="io-field"><div class="io-label">Focus</div><div class="io-value">ZK cryptography, protocol infrastructure</div></div>
+                  <div class="io-field"><div class="io-label">Style</div><div class="io-value">Precise, formal but not academic, prefers writing long-form</div></div>
+                </div>
+              </div>
+              <div class="io-card">
+                <div class="io-card-header output">⬆ Output — Archetype</div>
+                <div class="io-card-body">
+                  <div class="io-field"><div class="io-label">Primary</div><div class="io-value"><strong>Technical Oracle</strong> (75%). PhD in cryptography plus 2 years building on Solana means each post will carry genuine density. Posts infrequently, but when he writes, it should be the definitive explanation.</div></div>
+                  <div class="io-field"><div class="io-label">Secondary</div><div class="io-value"><strong>Strategist</strong> (25%). Researchers see implications before practitioners. He should publish predictions on where ZK adoption goes on Solana and build a track record of being right.</div></div>
+                  <div class="io-field"><div class="io-label">Unique POV</div><div class="io-value" style="color:var(--text); font-style:italic">"ZK proofs on Solana are being used as a privacy tool. That's the smallest use case. The real unlock is trustless computation verification — any program proving to any other program that it ran correctly."</div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="output-section">
+              <div class="output-section-header">🎨 Writing Style Guide</div>
+              <div class="output-section-body">
+                <strong>Tone:</strong> Precise without being cold. States the claim first, then the proof. Never hedges on technical facts — only hedges when genuinely uncertain (and says so explicitly).<br/><br/>
+                <strong>Posting cadence:</strong> 2-3x per week maximum. One extraordinary post outperforms seven average ones. Quality is the brand.<br/><br/>
+                <strong>Sentence structure:</strong> Long-form threads for technical content. Short and aphoristic for predictions. Every sentence earns its place.<br/><br/>
+                <strong>What this archetype must avoid:</strong> Posting filler to stay visible. Every weak post erodes the authority the strong posts built. If there's nothing worth saying this week, post nothing.
+              </div>
+            </div>
+
+            <div class="output-section">
+              <div class="output-section-header">✍️ Example Posts (in voice)</div>
+              <div class="output-section-body">
+                <div class="tweet-list">
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 1 — POV Introduction (Thread)</div>
+                    <div class="tweet-text">ZK proofs on Solana are being used for privacy. Token transfers, wallet anonymization, hidden balances.
+
+That's the least interesting thing you can do with them.
+
+The more important use case: any Solana program proving to any other program that it ran correctly, without re-running the computation.
+
+Here's why that changes everything: 🧵</div>
+                  </div>
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 2 — Technical Insight</div>
+                    <div class="tweet-text">Most people building ZK applications on Solana are using proof verification as the bottleneck.
+
+There's a property of Solana's parallel execution model that removes this bottleneck — but it requires the verifier and the prover to be on the same shard.
+
+We built Proof to exploit this directly.</div>
+                  </div>
+                  <div class="tweet-card">
+                    <div class="tweet-label">Post 5 — Ecosystem Observation</div>
+                    <div class="tweet-text">Three things happening in parallel on Solana that most people are treating as unrelated:
+
+1. Light Protocol compressing account state
+2. Firedancer reducing validator overhead
+3. MagicBlock enabling ephemeral rollups
+
+They're not unrelated. They're the same architectural direction.
+
+By 2027 the question won't be "is Solana scalable." It'll be "why did we ever think otherwise."</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /tabs-wrapper -->
+      </div><!-- /ff-examples -->
+
+    </section>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="footer-left">
+        Built for the <a href="https://superteam.fun" target="_blank">Superteam Earn</a> Frontier Track &bull; SagaPad Skill Marketplace
+      </div>
+      <div class="footer-links">
+        <a href="https://sagapad.com/skills/launch-signal" target="_blank">launch-signal</a>
+        <a href="https://sagapad.com/skills/founder-freq" target="_blank">founder-freq</a>
+        <a href="https://github.com" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // Tab switching
+  function switchTab(skill, tab, btn) {
+    document.querySelectorAll(`#${skill}-tabs .tab-btn`).forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    document.querySelectorAll(`[id^="${skill}-"]`).forEach(panel => {
+      if (panel.classList.contains('tab-panel')) panel.classList.remove('active');
+    });
+
+    const target = document.getElementById(`${skill}-${tab}`);
+    if (target) target.classList.add('active');
+  }
+
+  // Copy button
+  function copyText(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
+    });
+  }
+
+  // Scroll spy for sidebar
+  const sections = document.querySelectorAll('section[id], div[id]');
+  const links = document.querySelectorAll('.sidebar-link');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const match = document.querySelector(`.sidebar-link[href="#${entry.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
