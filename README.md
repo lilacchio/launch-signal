@@ -2,6 +2,10 @@
 
 A Claude Code skill that generates a complete X social playbook for newly submitted hackathon projects. Grounded in real breakout patterns from past Colosseum winners, not generic advice.
 
+**[Live preview](https://lilacchio.github.io/launch-signal/)**
+
+![launch-signal hero](https://lilacchio.github.io/launch-signal/screenshots/hero.png)
+
 ## Install
 
 ```bash
@@ -21,6 +25,8 @@ Most hackathon projects ship great products and get buried. The teams that break
 - Engagement strategy: who to follow, how to reply, which keywords to monitor
 - 5 fully written, ready-to-post tweets (no editing required)
 
+![terminal output](https://lilacchio.github.io/launch-signal/screenshots/terminal-section.png)
+
 ## How to use
 
 After installing, trigger the skill in Claude Code:
@@ -38,7 +44,11 @@ Claude will ask for:
 
 Then it searches for live Solana ecosystem momentum, selects the closest breakout pattern, and generates your full playbook.
 
-## Example
+## Example output
+
+![output examples](https://lilacchio.github.io/launch-signal/screenshots/output-section.png)
+
+![generated posts](https://lilacchio.github.io/launch-signal/screenshots/tweets-section.png)
 
 **Input:**
 ```
@@ -58,13 +68,6 @@ Team: ex-Aztec Protocol, ex-Solana Labs
 > A Solana MEV bot made more money last week than most DeFi traders.
 > It didn't build anything. It just watched your swaps and cut in line.
 > We built the fix. And it works with the DEXs you're already using. 🧵
->
-> **Post 2:**
-> Here's a sandwich attack that happened 6 hours ago on Solana.
-> Trader wanted to swap $10,000 USDC to SOL.
-> Bot saw the pending tx. Bought SOL first. Price moved. Trader got worse execution. Bot sold.
-> Profit for the bot: $83. Cost to the trader: $83 they'll never know they lost.
-> This happens thousands of times per day.
 
 ## What makes it different
 
